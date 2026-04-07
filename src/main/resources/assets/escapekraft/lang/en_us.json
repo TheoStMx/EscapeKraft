@@ -13,6 +13,7 @@
   "ek.leaderboard.empty": "No score recorded yet for '%s'.",
   "ek.leaderboard.title": "%s",
   "ek.leaderboard.display.set": "Leaderboard display set for '%s'.",
+  "ek.leaderboard.display.empty": "No score recorded yet",
   "ek.leaderboard.display.not_configured": "No leaderboard display configured for '%s'.",
   "ek.leaderboard.display.refreshed": "Leaderboard display refreshed for '%s'.",
   "ek.leaderboard.display.removed": "Leaderboard display removed for '%s'.",

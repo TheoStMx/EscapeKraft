@@ -1,5 +1,6 @@
 package fr.ekrec.teams;
 
+import fr.ekrec.text.EKTextFormatter;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.network.packet.s2c.play.OverlayMessageS2CPacket;
@@ -91,14 +92,7 @@ public class EKTeamManager {
                 continue;
             }
 
-            long elapsedSeconds = elapsedMs / 1000;
-            int minutes = (int) (elapsedSeconds / 60);
-            int seconds = (int) (elapsedSeconds % 60);
-            String timeFormatted = String.format("%02d:%02d", minutes, seconds);
-
-            Text message = Text.literal("⏱ " + team.getName() + " | ")
-                    .formatted(Formatting.GOLD)
-                    .append(Text.literal(timeFormatted).formatted(Formatting.WHITE));
+            Text message = EKTextFormatter.buildLiveTimerText(team.getName(), elapsedMs);
 
             for (UUID memberId : team.getMembers()) {
                 ServerPlayerEntity member = server.getPlayerManager().getPlayer(memberId);

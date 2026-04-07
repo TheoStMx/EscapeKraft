@@ -13,6 +13,7 @@
   "ek.leaderboard.empty": "Aucun score enregistré pour '%s'.",
   "ek.leaderboard.title": "%s",
   "ek.leaderboard.display.set": "Affichage du classement défini pour '%s'.",
+  "ek.leaderboard.display.empty": "Aucun score enregistré",
   "ek.leaderboard.display.not_configured": "Aucun affichage de classement configuré pour '%s'.",
   "ek.leaderboard.display.refreshed": "Affichage du classement actualisé pour '%s'.",
   "ek.leaderboard.display.removed": "Affichage du classement supprimé pour '%s'.",

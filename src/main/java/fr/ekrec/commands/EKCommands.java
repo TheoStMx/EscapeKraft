@@ -10,6 +10,7 @@ import fr.ekrec.scores.EKScore;
 import fr.ekrec.scores.EKScoreManager;
 import fr.ekrec.teams.EKTeam;
 import fr.ekrec.teams.EKTeamManager;
+import fr.ekrec.text.EKTextFormatter;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.command.argument.Vec3ArgumentType;
@@ -255,11 +256,7 @@ public class EKCommands {
             int rank = i + 1;
 
             ctx.getSource().sendFeedback(
-                    () -> Text.literal(rank + ". ")
-                            .formatted(Formatting.YELLOW)
-                            .append(Text.literal(score.teamName()).formatted(Formatting.AQUA))
-                            .append(Text.literal(" - ").formatted(Formatting.GRAY))
-                            .append(Text.literal(score.getFormattedTime()).formatted(Formatting.GREEN)),
+                    () -> EKTextFormatter.buildLeaderboardLine(rank, score.teamName(), score.elapsedMs()),
                     false
             );
         }

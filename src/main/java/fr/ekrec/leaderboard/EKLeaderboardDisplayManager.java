@@ -26,6 +26,7 @@ public final class EKLeaderboardDisplayManager {
     private static final int TOP_LIMIT = 10;
     private static final double LINE_SPACING = 0.3D;
     private static final double TITLE_OFFSET_Y = 2.0D;
+    private static final String EMPTY_DISPLAY_TRANSLATION_KEY = "ek.leaderboard.display.empty";
 
     private EKLeaderboardDisplayManager() {}
 
@@ -60,7 +61,13 @@ public final class EKLeaderboardDisplayManager {
 
         List<EKScore> scores = EKScoreManager.getTopScores(server, escapeName, TOP_LIMIT);
         if (scores.isEmpty()) {
-            summonTextDisplay(world, origin.add(0.0D, TITLE_OFFSET_Y - LINE_SPACING, 0.0D), "No score recorded yet", escapeName, false);
+            summonTextDisplayComponent(
+                    world,
+                    origin.add(0.0D, TITLE_OFFSET_Y - LINE_SPACING, 0.0D),
+                    buildTranslatableTextComponent(EMPTY_DISPLAY_TRANSLATION_KEY, "gray"),
+                    escapeName,
+                    false
+            );
             return true;
         }
 
@@ -110,8 +117,12 @@ public final class EKLeaderboardDisplayManager {
     }
 
     private static void summonTextDisplay(ServerWorld world, Vec3d position, String line, String escapeName, boolean title) throws CommandSyntaxException {
+        summonTextDisplayComponent(world, position, buildTextComponent(line, title), escapeName, title);
+    }
+
+    private static void summonTextDisplayComponent(ServerWorld world, Vec3d position, String textComponent, String escapeName, boolean title) throws CommandSyntaxException {
         NbtCompound nbt = StringNbtReader.readCompound(
-                buildDisplayNbt(position, line, escapeName, title)
+                buildDisplayNbt(position, textComponent, escapeName, title)
         );
         Entity entity = EntityType.loadEntityWithPassengers(
                 nbt,
@@ -130,11 +141,11 @@ public final class EKLeaderboardDisplayManager {
         }
     }
 
-    private static String buildDisplayNbt(Vec3d position, String line, String escapeName, boolean title) {
+    private static String buildDisplayNbt(Vec3d position, String textComponent, String escapeName, boolean title) {
         return "{"
                 + "id:\"minecraft:text_display\","
                 + "Pos:[" + position.x + "d," + position.y + "d," + position.z + "d],"
-                + "text:" + buildTextComponent(line, title) + ","
+                + "text:" + textComponent + ","
                 + "billboard:\"center\","
                 + "see_through:1b,"
                 + "shadow:1b,"
@@ -186,6 +197,13 @@ public final class EKLeaderboardDisplayManager {
                 + "\"color\":\"green\""
                 + "}"
                 + "]"
+                + "}";
+    }
+
+    private static String buildTranslatableTextComponent(String key, String color) {
+        return "{"
+                + "\"translate\":\"" + escapeJson(key) + "\","
+                + "\"color\":\"" + escapeJson(color) + "\""
                 + "}";
     }
 
