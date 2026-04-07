@@ -1,0 +1,6 @@
+{
+  "sound_event": "escapekraft:song_of_the_night",
+  "description": { "translate": "jukebox_song.escapekraft.song_of_the_night" },
+  "length_in_seconds": 189.0,
+  "comparator_output": 15
+}

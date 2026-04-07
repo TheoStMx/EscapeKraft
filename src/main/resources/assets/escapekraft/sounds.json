@@ -1,0 +1,10 @@
+{
+  "song_of_the_night": {
+    "sounds": [
+      {
+        "name": "escapekraft:song_of_the_night",
+        "stream": true
+      }
+    ]
+  }
+}

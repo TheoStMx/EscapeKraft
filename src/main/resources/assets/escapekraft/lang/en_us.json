@@ -1,0 +1,17 @@
+{
+  "ek.team.already_exists": "A team named '%s' already exists!",
+  "ek.team.created": "Team '%s' created! Other players can do /ek join %s",
+  "ek.team.left": "You left the team '%s'.",
+  "ek.team.not_found": "Team '%s' not found.",
+  "ek.team.joined": "You joined the team '%s'!",
+  "ek.team.member_disconnected": "One of your teammates disconnected.",
+  "ek.team.reconnected": "Welcome back ! Timer for team '%s' is still running.",
+  "ek.timer.start_failed": "Unable to start the timer (team not found or already started).",
+  "ek.timer.started": "The timer has started for team '%s'!",
+  "ek.timer.stop_failed": "Unable to stop the timer (team not found or timer not started).",
+  "ek.timer.stopped": "Well done! Team '%s' finished in %s!",
+
+  "itemGroup.escapekraft.creative_tab": "EscapeKraft",
+  "item.escapekraft.music_disc_song_of_the_night": "Music Disc",
+  "jukebox_song.escapekraft.song_of_the_night": "Michael Ghelfi Studios - Song Of The Night"
+}

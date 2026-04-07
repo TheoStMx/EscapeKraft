@@ -1,0 +1,17 @@
+{
+  "ek.team.already_exists": "Une équipe nommée '%s' existe déjà !",
+  "ek.team.created": "Équipe '%s' créée ! Les autres joueurs peuvent faire /ek join %s",
+  "ek.team.left": "Tu as quitté l'équipe '%s'.",
+  "ek.team.not_found": "Équipe '%s' introuvable.",
+  "ek.team.joined": "Tu as rejoint l'équipe '%s' !",
+  "ek.team.member_disconnected": "Un membre de votre équipe s'est déconnecté.",
+  "ek.team.reconnected": "De retour ! Le chrono pour l'équipe '%s' est toujours en cours.",
+  "ek.timer.start_failed": "Impossible de démarrer le chrono (équipe introuvable ou déjà démarré).",
+  "ek.timer.started": "Chrono démarré pour l'équipe '%s' !",
+  "ek.timer.stop_failed": "Impossible d'arrêter le chrono (équipe introuvable ou chrono non démarré).",
+  "ek.timer.stopped": "Bravo ! L'équipe '%s' a terminé en %s !",
+
+  "itemGroup.escapekraft.creative_tab": "EscapeKraft",
+  "item.escapekraft.music_disc_song_of_the_night": "Disque",
+  "jukebox_song.escapekraft.song_of_the_night": "Michael Ghelfi Studios - Song Of The Night"
+}

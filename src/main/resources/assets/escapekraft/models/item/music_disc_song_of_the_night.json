@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "escapekraft:item/music_disc_song_of_the_night"
+  }
+}

@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "escapekraft",
+	"version": "${version}",
+	"name": "EscapeKraft",
+	"description": "A useful mod to create escape games easily in Minecraft.",
+	"authors": [
+		"eKrec"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/escapekraft/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"fr.ekrec.EscapeKraft"
+		],
+		"client": [
+			"fr.ekrec.EscapeKraftClient"
+		],
+		"fabric-datagen": [
+			"fr.ekrec.EscapeKraftDataGenerator"
+		]
+	},
+	"mixins": [
+		"escapekraft.mixins.json",
+		{
+			"config": "escapekraft.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.18.5",
+		"minecraft": "~1.21.11",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
