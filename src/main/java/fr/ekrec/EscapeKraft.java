@@ -17,14 +17,12 @@ public class EscapeKraft implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-
 		EKSounds.initialize();
 		EKItems.initialize();
 		EKCreativeTabs.initialize();
 		EKCommands.initialize();
 		EKTeamManager.initialize();
 
-		LOGGER.info("EscapeKraft is on point !");
+		LOGGER.info("Initializing EscapeKraft");
 	}
-
 }
