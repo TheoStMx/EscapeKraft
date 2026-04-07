@@ -26,13 +26,6 @@
 			"fr.ekrec.EscapeKraftDataGenerator"
 		]
 	},
-	"mixins": [
-		"escapekraft.mixins.json",
-		{
-			"config": "escapekraft.client.mixins.json",
-			"environment": "client"
-		}
-	],
 	"depends": {
 		"fabricloader": ">=0.18.5",
 		"minecraft": "~1.21.11",
