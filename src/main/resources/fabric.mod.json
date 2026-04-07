@@ -8,10 +8,11 @@
 		"eKrec"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/TheoStMx/EscapeKraft",
+		"sources": "https://github.com/TheoStMx/EscapeKraft",
+		"issues": "https://github.com/TheoStMx/EscapeKraft/issues"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/escapekraft/icon.png",
 	"environment": "*",
 	"entrypoints": {

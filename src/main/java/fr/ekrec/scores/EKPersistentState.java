@@ -11,7 +11,12 @@ import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.PersistentStateType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class EKPersistentState extends PersistentState {
 
@@ -27,8 +32,6 @@ public class EKPersistentState extends PersistentState {
                     .forGetter(state -> state.scores)
     ).apply(instance, EKPersistentState::new));
 
-    private final Map<String, List<EKScore>> scores = new HashMap<>();
-
     private static final PersistentStateType<EKPersistentState> TYPE =
             new PersistentStateType<>(
                     STATE_KEY,
@@ -36,6 +39,8 @@ public class EKPersistentState extends PersistentState {
                     CODEC,
                     null
             );
+
+    private final Map<String, List<EKScore>> scores = new HashMap<>();
 
     public EKPersistentState() {}
 
@@ -50,7 +55,7 @@ public class EKPersistentState extends PersistentState {
     public void saveScore(String escapeName, String teamName, long elapsedMs) {
         scores.putIfAbsent(escapeName, new ArrayList<>());
         List<EKScore> escapeScores = scores.get(escapeName);
-        escapeScores.removeIf(s -> s.teamName().equals(teamName));
+        escapeScores.removeIf(score -> score.teamName().equals(teamName));
         escapeScores.add(new EKScore(teamName, elapsedMs));
         escapeScores.sort(Comparator.comparingLong(EKScore::elapsedMs));
         markDirty();
@@ -88,7 +93,12 @@ public class EKPersistentState extends PersistentState {
     }
 
     public List<EKScore> getScores(String escapeName) {
-        return scores.getOrDefault(escapeName, Collections.emptyList());
+        List<EKScore> escapeScores = scores.get(escapeName);
+        if (escapeScores == null) {
+            return List.of();
+        }
+
+        return List.copyOf(escapeScores);
     }
 
     public static EKPersistentState get(MinecraftServer server) {

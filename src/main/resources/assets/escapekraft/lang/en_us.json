@@ -10,7 +10,17 @@
   "ek.timer.started": "The timer has started for team '%s'!",
   "ek.timer.stop_failed": "Unable to stop the timer (team not found or timer not started).",
   "ek.timer.stopped": "Well done! Team '%s' finished in %s!",
-
+  "ek.leaderboard.empty": "No score recorded yet for '%s'.",
+  "ek.leaderboard.title": "%s",
+  "ek.leaderboard.display.set": "Leaderboard display set for '%s'.",
+  "ek.leaderboard.display.not_configured": "No leaderboard display configured for '%s'.",
+  "ek.leaderboard.display.refreshed": "Leaderboard display refreshed for '%s'.",
+  "ek.leaderboard.display.removed": "Leaderboard display removed for '%s'.",
+  "ek.leaderboard.remove_escape.not_found": "No scores found for '%s'.",
+  "ek.leaderboard.remove_escape.success": "All scores removed for '%s'.",
+  "ek.leaderboard.remove_score.not_found": "No score found for team '%s' in '%s'.",
+  "ek.leaderboard.remove_score.success": "Score removed for team '%s' in '%s'.",
+  "ek.leaderboard.setms.success": "Score set for team '%s' in '%s': %s",
   "itemGroup.escapekraft.creative_tab": "EscapeKraft",
   "item.escapekraft.music_disc_song_of_the_night": "Music Disc",
   "jukebox_song.escapekraft.song_of_the_night": "Michael Ghelfi Studios - Song Of The Night"

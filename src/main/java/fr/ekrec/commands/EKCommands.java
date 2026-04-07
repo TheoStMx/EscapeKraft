@@ -10,9 +10,9 @@ import fr.ekrec.scores.EKScore;
 import fr.ekrec.scores.EKScoreManager;
 import fr.ekrec.teams.EKTeam;
 import fr.ekrec.teams.EKTeamManager;
-import net.minecraft.command.argument.Vec3ArgumentType;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.argument.EntityArgumentType;
+import net.minecraft.command.argument.Vec3ArgumentType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerConfigEntry;
 import net.minecraft.server.command.CommandManager;
@@ -36,20 +36,17 @@ public class EKCommands {
                                         .executes(EKCommands::executeCreate)
                                 )
                         )
-
                         .then(CommandManager.literal("join")
                                 .then(CommandManager.argument("teamName", StringArgumentType.word())
                                         .executes(EKCommands::executeJoin)
                                 )
                         )
-
                         .then(CommandManager.literal("start")
                                 .requires(EKCommands::canUseAdminCommands)
                                 .then(CommandManager.argument("target", EntityArgumentType.player())
                                         .executes(EKCommands::executeStart)
                                 )
                         )
-
                         .then(CommandManager.literal("stop")
                                 .requires(EKCommands::canUseAdminCommands)
                                 .then(CommandManager.argument("target", EntityArgumentType.player())
@@ -58,7 +55,6 @@ public class EKCommands {
                                         )
                                 )
                         )
-
                         .then(CommandManager.literal("leaderboard")
                                 .requires(EKCommands::canUseAdminCommands)
                                 .then(CommandManager.literal("display")
@@ -118,7 +114,6 @@ public class EKCommands {
     private static int executeCreate(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
         String teamName = StringArgumentType.getString(ctx, "teamName");
         ServerPlayerEntity player = ctx.getSource().getPlayerOrThrow();
-
         return createTeam(ctx, player, teamName);
     }
 
@@ -153,13 +148,12 @@ public class EKCommands {
         EKTeam previousTeam = EKTeamManager.getTeamOfPlayer(player.getUuid());
         if (previousTeam != null) {
             ctx.getSource().sendFeedback(
-                    () -> Text.translatable("ek.team.left", previousTeam.name).formatted(Formatting.YELLOW),
+                    () -> Text.translatable("ek.team.left", previousTeam.getName()).formatted(Formatting.YELLOW),
                     false
             );
         }
 
         boolean joined = EKTeamManager.joinTeam(teamName, player.getUuid());
-
         if (!joined) {
             ctx.getSource().sendFeedback(
                     () -> Text.translatable("ek.team.not_found", teamName).formatted(Formatting.RED),
@@ -177,10 +171,8 @@ public class EKCommands {
 
     private static int executeStart(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
         ServerPlayerEntity target = EntityArgumentType.getPlayer(ctx, "target");
-        MinecraftServer server = ctx.getSource().getServer();
 
         boolean started = EKTeamManager.startTimer(target.getUuid());
-
         if (!started) {
             ctx.getSource().sendFeedback(
                     () -> Text.translatable("ek.timer.start_failed").formatted(Formatting.RED),
@@ -190,9 +182,8 @@ public class EKCommands {
         }
 
         EKTeam team = EKTeamManager.getTeamOfPlayer(target.getUuid());
-
         ctx.getSource().sendFeedback(
-                () -> Text.translatable("ek.timer.started", team.name).formatted(Formatting.GREEN),
+                () -> Text.translatable("ek.timer.started", team.getName()).formatted(Formatting.GREEN),
                 false
         );
         return 1;
@@ -221,19 +212,17 @@ public class EKCommands {
             return 0;
         }
 
-        // Save score
-        EKScoreManager.saveScore(server, escapeName, team.name, elapsed);
+        EKScoreManager.saveScore(server, escapeName, team.getName(), elapsed);
         if (EKLeaderboardDisplayManager.hasDisplay(server, escapeName)) {
             EKLeaderboardDisplayManager.refreshDisplay(server, escapeName);
         }
 
-        // Notifies all connected members
-        EKScore score = new EKScore(team.name, elapsed);
-        for (UUID memberId : team.members) {
+        EKScore score = new EKScore(team.getName(), elapsed);
+        for (UUID memberId : team.getMembers()) {
             ServerPlayerEntity member = server.getPlayerManager().getPlayer(memberId);
             if (member != null) {
                 member.sendMessage(
-                        Text.translatable("ek.timer.stopped", team.name, score.getFormattedTime())
+                        Text.translatable("ek.timer.stopped", team.getName(), score.getFormattedTime())
                                 .formatted(Formatting.GREEN),
                         false
                 );
@@ -250,14 +239,14 @@ public class EKCommands {
 
         if (scores.isEmpty()) {
             ctx.getSource().sendFeedback(
-                    () -> Text.literal("No score recorded yet for '" + escapeName + "'.").formatted(Formatting.YELLOW),
+                    () -> Text.translatable("ek.leaderboard.empty", escapeName).formatted(Formatting.YELLOW),
                     false
             );
             return 0;
         }
 
         ctx.getSource().sendFeedback(
-                () -> Text.literal(escapeName).formatted(Formatting.GOLD, Formatting.BOLD),
+                () -> Text.translatable("ek.leaderboard.title", escapeName).formatted(Formatting.GOLD, Formatting.BOLD),
                 false
         );
 
@@ -290,7 +279,7 @@ public class EKCommands {
         );
 
         ctx.getSource().sendFeedback(
-                () -> Text.literal("Leaderboard display set for '" + escapeName + "'.").formatted(Formatting.GREEN),
+                () -> Text.translatable("ek.leaderboard.display.set", escapeName).formatted(Formatting.GREEN),
                 false
         );
         return 1;
@@ -302,14 +291,14 @@ public class EKCommands {
 
         if (!refreshed) {
             ctx.getSource().sendFeedback(
-                    () -> Text.literal("No leaderboard display configured for '" + escapeName + "'.").formatted(Formatting.RED),
+                    () -> Text.translatable("ek.leaderboard.display.not_configured", escapeName).formatted(Formatting.RED),
                     false
             );
             return 0;
         }
 
         ctx.getSource().sendFeedback(
-                () -> Text.literal("Leaderboard display refreshed for '" + escapeName + "'.").formatted(Formatting.GREEN),
+                () -> Text.translatable("ek.leaderboard.display.refreshed", escapeName).formatted(Formatting.GREEN),
                 false
         );
         return 1;
@@ -321,14 +310,14 @@ public class EKCommands {
 
         if (!removed) {
             ctx.getSource().sendFeedback(
-                    () -> Text.literal("No leaderboard display configured for '" + escapeName + "'.").formatted(Formatting.RED),
+                    () -> Text.translatable("ek.leaderboard.display.not_configured", escapeName).formatted(Formatting.RED),
                     false
             );
             return 0;
         }
 
         ctx.getSource().sendFeedback(
-                () -> Text.literal("Leaderboard display removed for '" + escapeName + "'.").formatted(Formatting.YELLOW),
+                () -> Text.translatable("ek.leaderboard.display.removed", escapeName).formatted(Formatting.YELLOW),
                 false
         );
         return 1;
@@ -341,7 +330,7 @@ public class EKCommands {
 
         if (!removed) {
             ctx.getSource().sendFeedback(
-                    () -> Text.literal("No scores found for '" + escapeName + "'.").formatted(Formatting.RED),
+                    () -> Text.translatable("ek.leaderboard.remove_escape.not_found", escapeName).formatted(Formatting.RED),
                     false
             );
             return 0;
@@ -350,7 +339,7 @@ public class EKCommands {
         refreshLeaderboardDisplayIfPresent(server, escapeName);
 
         ctx.getSource().sendFeedback(
-                () -> Text.literal("All scores removed for '" + escapeName + "'.").formatted(Formatting.YELLOW),
+                () -> Text.translatable("ek.leaderboard.remove_escape.success", escapeName).formatted(Formatting.YELLOW),
                 false
         );
         return 1;
@@ -364,7 +353,7 @@ public class EKCommands {
 
         if (!removed) {
             ctx.getSource().sendFeedback(
-                    () -> Text.literal("No score found for team '" + teamName + "' in '" + escapeName + "'.").formatted(Formatting.RED),
+                    () -> Text.translatable("ek.leaderboard.remove_score.not_found", teamName, escapeName).formatted(Formatting.RED),
                     false
             );
             return 0;
@@ -373,7 +362,7 @@ public class EKCommands {
         refreshLeaderboardDisplayIfPresent(server, escapeName);
 
         ctx.getSource().sendFeedback(
-                () -> Text.literal("Score removed for team '" + teamName + "' in '" + escapeName + "'.").formatted(Formatting.YELLOW),
+                () -> Text.translatable("ek.leaderboard.remove_score.success", teamName, escapeName).formatted(Formatting.YELLOW),
                 false
         );
         return 1;
@@ -390,7 +379,7 @@ public class EKCommands {
 
         EKScore score = new EKScore(teamName, elapsedMs);
         ctx.getSource().sendFeedback(
-                () -> Text.literal("Score set for team '" + teamName + "' in '" + escapeName + "': " + score.getFormattedTime())
+                () -> Text.translatable("ek.leaderboard.setms.success", teamName, escapeName, score.getFormattedTime())
                         .formatted(Formatting.GREEN),
                 false
         );
@@ -405,11 +394,7 @@ public class EKCommands {
 
     public static void initialize() {
         CommandRegistrationCallback.EVENT.register(
-                (dispatcher,
-                 registryAccess,
-                 environment) -> {
-            EKCommands.register(dispatcher);
-        });
+                (dispatcher, registryAccess, environment) -> EKCommands.register(dispatcher)
+        );
     }
-
 }
