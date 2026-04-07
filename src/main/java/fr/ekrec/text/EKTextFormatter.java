@@ -12,10 +12,9 @@ public final class EKTextFormatter {
 
     public static String formatElapsed(long elapsedMs) {
         long totalSeconds = elapsedMs / 1000;
-        long centiseconds = (elapsedMs % 1000) / 10;
         int minutes = (int) (totalSeconds / 60);
         int seconds = (int) (totalSeconds % 60);
-        return String.format("%02d:%02d:%02d", minutes, seconds, centiseconds);
+        return String.format("%02d:%02d", minutes, seconds);
     }
 
     public static MutableText buildLiveTimerText(String teamName, long elapsedMs) {

@@ -4,6 +4,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import fr.ekrec.EscapeKraft;
 import fr.ekrec.scores.EKScore;
 import fr.ekrec.scores.EKScoreManager;
+import fr.ekrec.text.EKTextFormatter;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -73,9 +74,9 @@ public final class EKLeaderboardDisplayManager {
 
         for (int i = 0; i < scores.size(); i++) {
             EKScore score = scores.get(i);
+            EKLeaderboardDisplayLine line = new EKLeaderboardDisplayLine(i + 1, score.teamName(), score.elapsedMs());
             double lineY = origin.y + TITLE_OFFSET_Y - ((i + 1) * LINE_SPACING);
-            String line = (i + 1) + ". " + score.teamName() + " - " + score.getFormattedTime();
-            summonTextDisplay(world, new Vec3d(origin.x, lineY, origin.z), line, escapeName, false);
+            summonLeaderboardLine(world, new Vec3d(origin.x, lineY, origin.z), line, escapeName);
         }
 
         return true;
@@ -114,6 +115,10 @@ public final class EKLeaderboardDisplayManager {
         for (Entity entity : entities) {
             entity.discard();
         }
+    }
+
+    private static void summonLeaderboardLine(ServerWorld world, Vec3d position, EKLeaderboardDisplayLine line, String escapeName) throws CommandSyntaxException {
+        summonTextDisplayComponent(world, position, buildLeaderboardLineComponent(line), escapeName, false);
     }
 
     private static void summonTextDisplay(ServerWorld world, Vec3d position, String line, String escapeName, boolean title) throws CommandSyntaxException {
@@ -164,28 +169,16 @@ public final class EKLeaderboardDisplayManager {
                     + "}";
         }
 
-        int separatorIndex = line.indexOf(" - ");
-        if (separatorIndex < 0) {
-            return "{\"text\":\"" + escapeJson(line) + "\"}";
-        }
+        return "{\"text\":\"" + escapeJson(line) + "\"}";
+    }
 
-        String leftPart = line.substring(0, separatorIndex);
-        String timePart = line.substring(separatorIndex + 3);
-
-        int teamSeparatorIndex = leftPart.indexOf(". ");
-        if (teamSeparatorIndex < 0) {
-            return "{\"text\":\"" + escapeJson(line) + "\"}";
-        }
-
-        String rankPart = leftPart.substring(0, teamSeparatorIndex + 2);
-        String teamPart = leftPart.substring(teamSeparatorIndex + 2);
-
+    private static String buildLeaderboardLineComponent(EKLeaderboardDisplayLine line) {
         return "{"
-                + "\"text\":\"" + escapeJson(rankPart) + "\","
+                + "\"text\":\"" + line.rank() + ". \","
                 + "\"color\":\"yellow\","
                 + "\"extra\":["
                 + "{"
-                + "\"text\":\"" + escapeJson(teamPart) + "\","
+                + "\"text\":\"" + escapeJson(line.teamName()) + "\","
                 + "\"color\":\"aqua\""
                 + "},"
                 + "{"
@@ -193,7 +186,7 @@ public final class EKLeaderboardDisplayManager {
                 + "\"color\":\"gray\""
                 + "},"
                 + "{"
-                + "\"text\":\"" + escapeJson(timePart) + "\","
+                + "\"text\":\"" + escapeJson(EKTextFormatter.formatElapsed(line.elapsedMs())) + "\","
                 + "\"color\":\"green\""
                 + "}"
                 + "]"
